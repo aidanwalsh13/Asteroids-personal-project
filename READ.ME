@@ -1,0 +1,62 @@
+VENV = Virtual environment
+A self contained python bubble
+Using its own python interpretor and own installed packages
+Different projects use different versions of the same library
+
+ONE VENV per project
+Always activat before project start: ``` source .venv/bin/activate
+No need to commit
+New terminals need reactivation
+'ModuleNotFoundError' = likely not in the right venv
+Dependencies (deps) eg pygame, requests... need installing in venv and recording in dep file
+
+
+PYGAME = Open source pygame library
+Installed in ~/practice/my-work/games/asteroids2/.venv/lib/python3.12/site-packages$
+
+
+GAME LOOPS
+the most basic game loop has 3 stages:
+1 - Check player input
+2 - Update game world
+3 - Game -> Screen
+
+EVENT DRIVEN MODEL
+Reacting to the actions
+- moving, clicking the mouse
+- pressing a key
+- zooming, resizing, closing window
+Pygame creates an EVENT object (KEYDOWN, MOUSEMOTION, QUIT etc)
+Adds to an event queue, a 'to-do' list for all actions since last frame
+---pygame.event.get()
+- return list of EVENT objects
+- empties the queue upon call
+- now handled, will not appear in next frame
+~~~EXAMPLE~~~
+for event in pygame.event.get():
+    events = pygame.event.get()
+    print(events)
+[<Event(1025-MouseButtonDown {'pos': (345, 200), 'button': 1})>,
+ <Event(768-KeyDown {'key': 32, 'unicode': ' '})>]
+# key: value
+~~~       ~~~
+for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+        running = False
+
+    elif event.type == pygame.KEYDOWN:
+        print("A key was pressed:", event.key)
+
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+        print("Mouse clicked at", event.pos)
+~~~       ~~~
+
+
+
+
+
+
+
+
+
+
