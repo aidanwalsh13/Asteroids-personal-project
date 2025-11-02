@@ -28,7 +28,7 @@ def main():
     Shot.containers = (updatable, drawable, shots)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # instantiate player. creating instance in centre of screen
-    asteroid_field = AsteroidField()
+    field = AsteroidField(player)
 
     while True: # this game will run FOREVER... or until I close it down and it doensn't get buggy
 # useful for games, servers, event monitoring (ie waiting for a button input)

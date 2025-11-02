@@ -2,10 +2,12 @@ import pygame
 from circleshape import CircleShape
 from constants import *
 import random
+from player import Player
 
 class Asteroid(CircleShape):
-    def __init__(self, x, y, radius):
+    def __init__(self, x, y, radius, player):
         super().__init__(x, y, radius)
+        self.player = player
 
     def draw(self, screen): # pygame method
         pygame.draw.circle(
@@ -27,16 +29,24 @@ class Asteroid(CircleShape):
 
         from nonplayer import Asteroid
 
-        a1 = Asteroid(self.position.x, self.position.y, new_radius)
-        a2 = Asteroid(self.position.x, self.position.y, new_radius)
+        a1 = Asteroid(self.position.x, self.position.y, new_radius, self.player)
+        a2 = Asteroid(self.position.x, self.position.y, new_radius, self.player)
 
         a1.velocity = v1 * 1.2
         a2.velocity = v2 * 1.2
 
-    def update(self, dt):
+    def update(self, dt): # we call upon the seperate variable, player.pos for the individual player position
+        if self.radius == ASTEROID_MAX_RADIUS and self.position.distance_to(self.player.pos) <= ASTEROID_HOMING_RANGE:
+            direction = (self.player.pos - self.position).normalize()
+            self.velocity = direction * ASTEROID_HOMING_SPEED
+        if self.radius == ASTEROID_MAX_RADIUS - ASTEROID_MIN_RADIUS and self.position.distance_to(self.player.pos) <= (ASTEROID_HOMING_RANGE * 0.75):
+            direction = (self.player.pos - self.position).normalize()
+            self.velocity = direction * (ASTEROID_HOMING_SPEED * 1.25)
+
+    # move asteroid
         self.position += self.velocity * dt
 
-        #self.rect.center = self.position  # if you maintain rect; or set in draw
+    #self.rect.center = self.position  # if you maintain rect; or set in draw
         #x, y = self.position.x, self.position.y
         #if x < -PADDING or x > SCREEN_WIDTH + PADDING or y < -PADDING or y > SCREEN_HEIGHT + PADDING:
         #    self.kill()

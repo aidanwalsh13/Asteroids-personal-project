@@ -9,6 +9,11 @@ class Player(CircleShape):
         self.rotation = 0
         self.timer = 0
 
+    @property
+    def pos(self):
+        # return the specific player position when someone accesses `player.pos`
+        return self.position
+
     def triangle(self): # this def requires more study
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
