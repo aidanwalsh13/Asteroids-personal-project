@@ -38,7 +38,7 @@ def main():
 
         dt = clock.tick(60) / 1000 # 1/60th of a second. 60 seconds, dt: the amount of time since last frame
 
-        screen.fill("gold") # any colour I want
+        screen.fill("black") # any colour I want
 
         for sprite in updatable:
             sprite.update(dt)

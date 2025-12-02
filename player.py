@@ -25,9 +25,9 @@ class Player(CircleShape):
     def draw(self, screen): # pygame method
         pygame.draw.polygon(
             screen, # where
-            "red", # colour
+            "white", # colour
             self.triangle(), # what
-            4 # width
+            2 # width. formerly 4
         )
 
     def rotate(self, dt):
