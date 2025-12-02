@@ -58,6 +58,19 @@ class Player(CircleShape):
     def shoot(self):
         if self.timer > 0:
             return None
-        shot = Shot(self.position.x, self.position.y)
-        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        
+        #shotgun mode //
+        spread = [20, 10, 0, -10, -20]
+        base_direction = pygame.Vector2(0, 1).rotate(self.rotation)
+        #5 shots
+        for s in spread:
+            shot = Shot(self.position.x, self.position.y)
+            direction = base_direction.rotate(s)
+            shot.velocity = direction * PLAYER_SHOOT_SPEED
+        # //
+
+        #single shot //
+        #shot = Shot(self.position.x, self.position.y)
+        #shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        # //
         self.timer = PLAYER_SHOOT_COOLDOWN

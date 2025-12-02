@@ -38,13 +38,14 @@ class Asteroid(CircleShape):
     def update(self, dt): # we call upon the seperate variable, player.pos for the individual player position
         direction = (self.player.pos - self.position).normalize()
         if self.radius == ASTEROID_MAX_RADIUS and self.position.distance_to(self.player.pos) <= ASTEROID_HOMING_RANGE:
+            self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.01)
+        if self.radius == ASTEROID_MAX_RADIUS - ASTEROID_MIN_RADIUS and self.position.distance_to(self.player.pos) <= (ASTEROID_HOMING_RANGE * 0.80):
             self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.02)
-        if self.radius == ASTEROID_MAX_RADIUS - ASTEROID_MIN_RADIUS and self.position.distance_to(self.player.pos) <= (ASTEROID_HOMING_RANGE * 0.75):
-            self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.04)
-        
+        if self.radius == ASTEROID_MIN_RADIUS and self.position.distance_to(self.player.pos) <= (ASTEROID_HOMING_RANGE * 0.60):
+            self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.03)
         # LERP = LINEAR INTERPOLATION. the smooth blending of two values. 0.0 -> 1.0 : slow -> fast tracking
 
-    # move asteroid
+        # move asteroid
         self.position += self.velocity * dt
 
     #self.rect.center = self.position  # if you maintain rect; or set in draw

@@ -6,6 +6,7 @@ from constants import *
 from player import Player
 from nonplayer import Asteroid
 from asteroidfield import AsteroidField
+from upgrades import Upgrade
 from shot import Shot
 
 def main():
@@ -14,29 +15,35 @@ def main():
     pygame.init()
     clock = pygame.time.Clock()
     # using dt # delta time: the amount of time since last frame generated
-    dt = 0
+    dt = 0.0
+    timer = 0.0 # keeping track of how long has passed since game start
+
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
+    upgrades = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable) # Player object containers. update and draw these
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable)
     Shot.containers = (updatable, drawable, shots)
+    Upgrade.containers = (updatable, drawable, upgrades)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # instantiate player. creating instance in centre of screen
     field = AsteroidField(player)
 
-    while True: # this game will run FOREVER... or until I close it down and it doensn't get buggy
+    while True: # this game will run FOREVER... or until I close it down and it doesn't get buggy
 # useful for games, servers, event monitoring (ie waiting for a button input)
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # able to close the game when necessary
                 return
 
         dt = clock.tick(60) / 1000 # 1/60th of a second. 60 seconds, dt: the amount of time since last frame
+
+        timer += dt # tick tock
 
         screen.fill("black") # any colour I want
 
