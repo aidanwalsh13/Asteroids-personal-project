@@ -6,7 +6,7 @@ from constants import *
 from player import Player
 from nonplayer import Asteroid
 from asteroidfield import AsteroidField
-from upgrades import Upgrade
+from upgrades import *
 from shot import Shot
 
 def main():
@@ -60,6 +60,10 @@ def main():
                 if asteroid.collide(shot):
                     shot.kill()
                     asteroid.split()
+        for upgrade in upgrades:
+            if player.collide(upgrade):
+                upgrade.buff(player)
+                upgrade.kill()
 
         pygame.display.flip() # flip the canvas over and see what I have created!
 # BE SURE TO CALL THIS LAST TO ENSURE IT REFRESHES THE SCREEN AT THE END OF EACH LOOP

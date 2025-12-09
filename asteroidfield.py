@@ -3,7 +3,7 @@ import random # for nonplayer properties and spawn
 from nonplayer import Asteroid
 from constants import * # values for screen size, asteroid size, asteroid kinds
 from player import Player
-from upgrades import Upgrade
+from upgrades import *
 import random
 
 class AsteroidField(pygame.sprite.Sprite):
@@ -32,22 +32,26 @@ class AsteroidField(pygame.sprite.Sprite):
 
     def __init__(self, player):
         pygame.sprite.Sprite.__init__(self, self.containers) # parent class; pygame.sprite.Sprite
-        self.spawn_timer = 0.0 # initialise to track time since last asteroid spawn
-        self.spawn_rate = 2.0
-        self.timer = 0.0
         self.player = player
-        self.asteroids = []
-        self.upgrades = []
-        self.upgrade_timer = 0.0
-        self.upgrade_rate = random.uniform(30, 60)
+        self.timer = 0.0
 
-    def spawn_asteroid(self, radius, position, velocity): # method for creating objects
+        self.spawn_timer = 0.0 # initialise to track time since last asteroid spawn
+        self.spawn_rate = 2.0 # every two seconds
+        self.asteroids = []
+        
+        self.upgrade_timer = 0.0 # since last upgrade
+        self.upgrade_rate =  2.0 #random.uniform(30, 60)
+        self.upgrades = []
+
+    def spawn_asteroid(self, radius, position, velocity): # method for creating nonplayer object
         asteroid = Asteroid(position.x, position.y, radius, self.player)
         asteroid.velocity = velocity
         self.asteroids.append(asteroid)
 
-    def spawn_upgrade(self, radius, position, velocity): # method for creating objects
-        upgrade = Upgrade(position.x, position.y, radius, self.player)
+    def spawn_upgrade(self, radius, position, velocity): # method for creating upgrade object
+        upgrade = SMGupgrade(position.x, position.y, radius, self.player)
+        #upgrade_class = random.choice([SMGupgrade, IDONTEXISTYET]) # randomise choice, or create new specific sub-class
+        #upgrade = upgrade_class(position.x, position.y, radius, self.player)
         upgrade.velocity = velocity
         self.upgrades.append(upgrade)
 
@@ -66,6 +70,7 @@ class AsteroidField(pygame.sprite.Sprite):
         if self.spawn_timer >= self.spawn_rate:
             self.spawn_asteroid(ASTEROID_MIN_RADIUS * kind, position, velocity) # call spawn method on these four properties
             self.spawn_timer = 0.0 # reset
+
         if self.timer >= 5.0:
             self.spawn_rate *= 0.9 # spawn faster, shorter interval
             self.timer = 0.0 # reset

@@ -2,7 +2,7 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
 ASTEROID_MIN_RADIUS = 10
-ASTEROID_KINDS = 3 # sizes 20, 40, 60. want anymore?
+ASTEROID_KINDS = 3 # sizes 20, 40, 60. want more?
 #ASTEROID_SPAWN_RATE = 2.0  # formerly 0.8 seconds // No longer used, see asteroid_field.py
 ASTEROID_MAX_RADIUS = ASTEROID_MIN_RADIUS * ASTEROID_KINDS
 PADDING = 100 # number of pixels

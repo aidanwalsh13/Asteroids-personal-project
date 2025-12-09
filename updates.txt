@@ -1,0 +1,8 @@
+for player speed, shot rate and shot spread, see file player.py
+key inputs, movement, and shoot functions
+
+for number of asteroids in a split, and rate at which they track player, see nonplayer.py
+split, and update functions
+
+for changing the rate of spawn, size of the screen and boundary for objects, 
+...look closer at this file. i could do with a better understanding of what is happening before i change anything

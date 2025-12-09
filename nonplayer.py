@@ -27,8 +27,6 @@ class Asteroid(CircleShape):
         v2 = self.velocity.rotate(-new_angle)
         new_radius = self.radius - ASTEROID_MIN_RADIUS
 
-        from nonplayer import Asteroid
-
         a1 = Asteroid(self.position.x, self.position.y, new_radius, self.player)
         a2 = Asteroid(self.position.x, self.position.y, new_radius, self.player)
 

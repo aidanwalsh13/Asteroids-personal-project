@@ -8,6 +8,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS) # super/parent constructor (circleshape)
         self.rotation = 0
         self.timer = 0
+        self.fire_rate = PLAYER_SHOOT_COOLDOWN # applying value to a variable that is mutable, not constant (constants.py)
 
     @property
     def pos(self):
@@ -46,6 +47,7 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+
         if self.timer > 0:
             self.timer -= dt
         if self.timer < 0:
@@ -60,17 +62,20 @@ class Player(CircleShape):
             return None
         
         #shotgun mode //
-        spread = [20, 10, 0, -10, -20]
-        base_direction = pygame.Vector2(0, 1).rotate(self.rotation)
+        #spread = [20, 10, 0, -10, -20]
+        #base_direction = pygame.Vector2(0, 1).rotate(self.rotation)
         #5 shots
-        for s in spread:
-            shot = Shot(self.position.x, self.position.y)
-            direction = base_direction.rotate(s)
-            shot.velocity = direction * PLAYER_SHOOT_SPEED
+        #for s in spread:
+         #   shot = Shot(self.position.x, self.position.y)
+          #  direction = base_direction.rotate(s)
+           # shot.velocity = direction * PLAYER_SHOOT_SPEED
         # //
 
         #single shot //
-        #shot = Shot(self.position.x, self.position.y)
-        #shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        shot = Shot(self.position.x, self.position.y)
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         # //
-        self.timer = PLAYER_SHOOT_COOLDOWN
+        #print("shoot_cooldown:", self.fire_rate)# cant get this working
+        #self.timer = self.fire_rate
+
+        self.timer = self.fire_rate
