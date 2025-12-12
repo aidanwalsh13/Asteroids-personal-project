@@ -9,6 +9,8 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
         self.player = player
 
+        self.homing_delay = 1
+
     def draw(self, screen): # pygame method
         pygame.draw.circle(
             screen, # where
@@ -20,8 +22,19 @@ class Asteroid(CircleShape):
 
     def split(self):
         self.kill()
+
+        hit_score = 0
+
+        if self.radius >= 3 * ASTEROID_MIN_RADIUS:
+            hit_score = 5
+        elif self.radius >= 2 * ASTEROID_MIN_RADIUS:
+            hit_score = 10
+        else:
+            hit_score = 15
+
         if self.radius <= ASTEROID_MIN_RADIUS:
-            return
+            return hit_score
+
         new_angle = random.uniform(20, 50)
         v1 = self.velocity.rotate(new_angle)
         v2 = self.velocity.rotate(-new_angle)
@@ -33,21 +46,25 @@ class Asteroid(CircleShape):
         a1.velocity = v1 * 1.2
         a2.velocity = v2 * 1.2
 
+        return hit_score
+
     def update(self, dt): # we call upon the seperate variable, player.pos for the individual player position
         direction = (self.player.pos - self.position).normalize()
+        if self.homing_delay >= 0:
+            self.homing_delay -= dt
+        # homing block
         if self.radius == ASTEROID_MAX_RADIUS and self.position.distance_to(self.player.pos) <= ASTEROID_HOMING_RANGE:
-            self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.01)
+            if self.homing_delay <= 0:
+                self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.01)
         if self.radius == ASTEROID_MAX_RADIUS - ASTEROID_MIN_RADIUS and self.position.distance_to(self.player.pos) <= (ASTEROID_HOMING_RANGE * 0.80):
-            self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.02)
+            if self.homing_delay <= 0:
+                self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.02)
         if self.radius == ASTEROID_MIN_RADIUS and self.position.distance_to(self.player.pos) <= (ASTEROID_HOMING_RANGE * 0.60):
-            self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.03)
+            if self.homing_delay <= 0:
+                self.velocity = self.velocity.lerp(direction * ASTEROID_HOMING_SPEED, 0.03)
         # LERP = LINEAR INTERPOLATION. the smooth blending of two values. 0.0 -> 1.0 : slow -> fast tracking
 
         # move asteroid
         self.position += self.velocity * dt
 
-    #self.rect.center = self.position  # if you maintain rect; or set in draw
-        #x, y = self.position.x, self.position.y
-        #if x < -PADDING or x > SCREEN_WIDTH + PADDING or y < -PADDING or y > SCREEN_HEIGHT + PADDING:
-        #    self.kill()
-# kill asteroids when they leave the screen, BUT DONT ADD TO THE SCORE!
+# how to kill asteroids when they leave the screen, BUT NOT ADD TO THE SCORE!

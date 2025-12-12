@@ -1,7 +1,7 @@
 from circleshape import CircleShape
 from constants import *
 import pygame
-from shot import *
+from shot import Shot
 
 class Player(CircleShape):
     def __init__(self, x: int, y: int):
@@ -9,6 +9,8 @@ class Player(CircleShape):
         self.rotation = 0
         self.timer = 0
         self.fire_rate = PLAYER_SHOOT_COOLDOWN # applying value to a variable that is mutable, not constant (constants.py)
+        self.spread = [0] # shotgun upgrade value
+        self.spread_layer = 0 # the number of shot pairs added
 
     @property
     def pos(self):
@@ -60,22 +62,12 @@ class Player(CircleShape):
     def shoot(self):
         if self.timer > 0:
             return None
-        
-        #shotgun mode //
-        #spread = [20, 10, 0, -10, -20]
-        #base_direction = pygame.Vector2(0, 1).rotate(self.rotation)
-        #5 shots
-        #for s in spread:
-         #   shot = Shot(self.position.x, self.position.y)
-          #  direction = base_direction.rotate(s)
-           # shot.velocity = direction * PLAYER_SHOOT_SPEED
-        # //
 
-        #single shot //
-        shot = Shot(self.position.x, self.position.y)
-        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
-        # //
-        #print("shoot_cooldown:", self.fire_rate)# cant get this working
-        #self.timer = self.fire_rate
+        base_direction = pygame.Vector2(0, 1).rotate(self.rotation)
+
+        for s in self.spread:
+            shot = Shot(self.position.x, self.position.y) # init, where the shot starts
+            direction = base_direction.rotate(s) # rotate to face where it is shooting
+            shot.velocity = direction * PLAYER_SHOOT_SPEED # and fire at a set s
 
         self.timer = self.fire_rate
